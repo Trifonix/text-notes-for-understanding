@@ -174,3 +174,42 @@ func(17)
 
 === Функция как тип, параметр и результат другой функции ===
 
+Функцию можно записывать в переменную и вызывать её из неё
+
+def sum(a, b):
+	return a + b
+
+make_sum = sum
+print(make_sum(1, 4))	# Вывод: 5
+
+Ещё функцию можно передавать в параметр другой функции
+
+def do_operation(a, b, operation):
+	result = f"Получилось: {operation(a, b)}"
+	return result
+
+def sum(a, b): return a + b
+def mul(a, b): return a * b
+
+print( do_operation(1, 4, sum) )	# Вывод: 5
+print( do_operation(2, 5, mul) )	# Вывод: 10
+
+А ещё функция может быть возвращаемый значением из другой функции
+
+def sum(a, b): return a + b
+def sub(a, b): return a - b
+def mul(a, b): return a * b
+
+def what_operation(choice):
+	if 1 == choice: return sum
+	elif 2 == choice: return sub
+	else: return mul
+
+result = what_operation(1)
+print(result(2, 2))						# Вывод: 4
+
+result = what_operation(2)
+print(result(20, 6))					# Вывод: 14
+
+result = what_operation(3)
+print(result(5, 5))						# Вывод: 25
