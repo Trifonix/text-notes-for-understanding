@@ -194,7 +194,7 @@ def mul(a, b): return a * b
 print( do_operation(1, 4, sum) )	# Вывод: 5
 print( do_operation(2, 5, mul) )	# Вывод: 10
 
-А ещё функция может быть возвращаемый значением из другой функции
+А ещё функция может быть возвращаемым значением из другой функции
 
 def sum(a, b): return a + b
 def sub(a, b): return a - b
