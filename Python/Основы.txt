@@ -400,3 +400,16 @@ class NPC:
 		print(text)
 warrior = NPC()
 warrior.say_hello("I am warrior!")
+
+Так можно написать метод для отображения всех свойств объекта
+
+class Animal:
+	def __init__(self, name, age):
+		self.age = age
+		self.name = name
+	
+	def show_values(self):
+		print(f"У меня кличка: {self.name} и мой возраст: {self.age}")
+
+dog = Animal("Шарик", 4)
+dog.show_values()
