@@ -392,3 +392,11 @@ class Animal:
 
 cat = Animal("Tom", 5)
 print(cat.name, cat.age)
+
+Создание метода в классе
+
+class NPC:
+	def say_hello(self, text):
+		print(text)
+warrior = NPC()
+warrior.say_hello("I am warrior!")
