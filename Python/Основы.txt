@@ -446,3 +446,59 @@ new_gamer.__name = "Smith"
 new_gamer.print_gamer()
 
 В таком случае изменения атрибута не произойдёт. При желании можно обратиться к приватному атрибуту и изменить его через атрибут класса, например _Gamer__name , но тогда надо угадать правильное имя такого атрибута.
+
+Сеттеры и геттеры - это специальные методы доступа для установки новых значений атрибутов и получения их значений.
+
+class Person:
+    def __init__(self, name, age):
+        self.__name = name
+        self.__age = age
+    def set_age(self, age):
+        if 0 < age < 120:
+            self.__age = age
+        else:
+            print("Ошибка в возрасте")
+    def get_name(self):
+        return self.__name
+    def get_age(self):
+        return self.__age
+    def print_person(self):
+        print(f"Имя: {self.__name}\nВозраст: {self.__age}")
+tom = Person("Neo", 22)
+tom.print_person()
+tom.set_age(-12)
+tom.set_age(28)
+tom.print_person()
+
+Другой способ - это свойства (@property и @имя_свойства_геттера.setter).
+
+class Person:
+    def __init__(self, name, age):
+        self.__name = name
+        self.__age = age
+    
+    @property               # свойство-геттер
+    def age(self):
+        return self.__age
+    @age.setter             # свойство-сеттер
+    def age(self, age):
+        if 0 < age < 120:
+            self.__age = age
+        else:
+            print("Ошибочный возраст")
+    
+    @property
+    def name(self):
+        return self.__name
+    
+    def print_person(self):
+        print(f"Имя: {self.__name}, возраст: {self.__age}")
+
+neo = Person("Neo", 18)
+neo.print_person()
+neo.age = -28
+print(neo.age)
+neo.age = 28
+neo.print_person()
+
+При этом можно геттер использовать отдельно, без сеттера. Чтобы не менять значение, а только получать.
