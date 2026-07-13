@@ -746,3 +746,58 @@ neo.print_person()
 
 === Наследование ===
 
+Один из принципов ООП, который позволяет сокращать код, чтобы быстро создавать новые классы (подклассы) от родительских. Например есть класс Person, в которым есть private атрибут __name, геттер и метод отображения данных.
+
+class Person:
+    def __init__(self, name):
+        self.__name = name
+    @property
+    def name(self):
+        return self.__name
+    def display_info(self):
+        print(f"Name: {self.__name} ")
+neo = Person("Neo")
+neo.display_info()
+
+Можно сделать дочерний класс Worker, который унаследует все public атрибуты и методы родительского класса Person.
+
+class Worker(Person):
+    def work(self):
+        print("Готов вкалывать!")
+human = Worker("Worker 1")
+human.display_info()
+human.work()
+
+Ещё можно делать множественное наследование, когда подкласс наследует атрибуты и методы нескольких классов-родителей. Например, можно сделать РаботающегоСтудента.
+
+class Worker():
+    def work(self):
+        print("I am working!")
+class Student():
+    def study(self):
+        print("I am studing!")
+class WorkingStudent(Worker, Student):
+    pass
+agent = WorkingStudent()
+agent.work()
+agent.study()
+
+Оператор pass - это заглушка, с которой можно сделать шаблон класса.
+
+Если унаследовать от нескольких классно атрибуты или методы с одинаковыми именами, то выполняться будут первые из них по цепочке наследования.
+
+class Employee:
+    def do(self):
+        print("Employee works") 
+class Student:
+    def do(self):
+        print("Student studies")
+class WorkingStudent(Student, Employee):
+    pass
+tom = WorkingStudent()
+tom.do()                                    # Student studies
+
+Технически можно смотреть очередность выполнения атрибутов, методов от супер-классов через обращение в классе-наследнике к атрибуту __mro__ или вызов метода mro().
+
+print(WorkingStudent.__mro__)
+print(WorkingStudent.mro())
