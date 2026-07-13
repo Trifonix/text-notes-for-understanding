@@ -615,6 +615,7 @@ public, private, protected
 
 class Gamer:
 	field: int					# поле
+    # поле field может быть доступно без создания объекта
 
 	def __init__(self, name, age, status):
 		self.__name = name    			# protected
