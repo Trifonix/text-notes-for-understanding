@@ -419,6 +419,51 @@ def hello_func():
     return "Hello_World"
 print(hello_func())
 
+Также можно сделать декоратор подсчёта времени для функции с параметром. Здесь в качестве параметра будет передаваться время сна. Переметры передаются через 'арги' и 'кварги' в обёртку.
+
+from typing import Callable
+import time
+def param_timer_deco(func: Callable):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        res = func(*args, **kwargs)
+        end = time.time()
+        print(f"Функция работала: {end-start}")
+        return res
+    return wrapper
+@param_timer_deco
+def my_func(sleep_time: int):
+    time.sleep(sleep_time)
+    return 42+42
+print(my_func(2))
+
+Декоратор с параметром. Допустим, мы хотим написать декоратор, который будет лимитировать количество вызовов исходной функции. Для этого в декораторе добавляется ещё один уровень вложенности - дополнительная обёртка для параметра лимита.
+
+from typing import Callable
+import time
+def limit_deco(limit: int):
+    def inner(func: Callable):
+        def wrapper():
+            nonlocal limit
+            if 0 == limit:
+                print("Лимит исчерпан")
+                return 404
+            limit -= 1
+            start_time = time.time()
+            res = func()
+            end_time = time.time()
+            print(f"Время исполнения: {end_time-start_time}")
+            return res
+        return wrapper
+    return inner
+@limit_deco(2)
+def my_func():
+    time.sleep(.2)
+    return 200
+print(my_func())
+print(my_func())
+print(my_func())
+
 
 
 === Классы и объекты ===
