@@ -464,6 +464,66 @@ print(my_func())
 print(my_func())
 print(my_func())
 
+При использовании декоратора не так просто вывести докстринг исходной функции. Для получения докстринга и имени исходной функции подключается отдельный декоратор wraps из модуля functools. Для включения этот wraps подключается через 'собачку' перед объявлением функции обёртки внутри декоратора.
+from typing import Callable
+from functools import wraps
+def deco(func: Callable):
+    @wraps(func)
+    def wrapper():
+        """Менее важный докстринг"""
+        print("Мы тут")
+        res = func()
+        return res
+    return wrapper
+@deco
+def my_good_func():
+    """Очень важный докстринг"""
+    return 0
+print(my_good_func())
+print(my_good_func.__doc__)         # до wraps вывод - Менее..
+print(my_good_func.__name__)        # до wraps вывод - wrapper
+
+Декоратор для асинхронной функции. В нём вместо функции подключается корутина.
+
+from typing import Coroutine
+import asyncio
+def deco(coroutine: Coroutine):
+    async def wrapper(*args, **kwargs):
+        res = await coroutine(*args, **kwargs)
+        return res
+    return wrapper
+@deco
+async def my_async_func():
+    print("Начинаем")
+    await asyncio.sleep(0.42)
+    print("Поспали...")
+    return 0
+asyncio.run(my_async_func())
+# my_async_func = deco(my_async_func)
+
+Декоратор для кэширования результатов функции lru_cache. Можно ограничивать количество результатов кэширования через параметр maxsize для декоратора @lru_cache
+
+from functools import lru_cache
+import time
+@lru_cache
+def my_long_calc():
+    time.sleep(4)
+    return 16
+print(my_long_calc())           # 4 секунды сна
+print(my_long_calc())           # 0 секунд сна
+print(my_long_calc())           # 0 секунд сна
+
+Контекстный менеджер
+
+from contextlib import contextmanager
+@contextmanager
+def ctx_manager():
+    print("Hello")
+    yield                       # передача управления коду из with-as
+    print("World")
+with ctx_manager() as man:
+    print("42")
+
 
 
 === Классы и объекты ===
