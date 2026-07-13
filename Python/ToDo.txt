@@ -61,11 +61,11 @@ List comprehension
 Форматирование (f-строка, .format() )
 ", ".join()		# разделитель ", "
 
-Конструкция match 			&
-Кортежи в pattern matching		&
-Массивы в pattern matching		&
-Словари в pattern matching		&
-Классы в pattern matching		&
+Конструкция match 			        &
+Кортежи в pattern matching		    &
+Массивы в pattern matching		    &
+Словари в pattern matching		    &
+Классы в pattern matching		    &
 guards или ограничения шаблонов		&
 Установка псевдонимов и паттерн AS	&
 
