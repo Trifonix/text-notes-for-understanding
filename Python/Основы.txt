@@ -925,3 +925,8 @@ Person.print_type()
 
 bob = Person()
 bob.print_type()
+
+
+
+=== Класс object. Строковое представление объекта ===
+
