@@ -805,3 +805,8 @@ tom.do()                                    # Student studies
 
 print(WorkingStudent.__mro__)
 print(WorkingStudent.mro())
+
+
+
+=== Переопределение функционала базового класса ===
+
