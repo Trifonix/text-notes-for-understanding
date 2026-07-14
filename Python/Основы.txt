@@ -810,3 +810,22 @@ print(WorkingStudent.mro())
 
 === Переопределение функционала базового класса ===
 
+Класс-наследник может не только перенимать атрибуты и методы класса-родителя, но и дополнять их. Например, есть класс Person и подкласс Worker. В классе будет конструктор с атрибутом имени, а в подклассе с именем и компанией. В классе будет метод вывода данных объекта, а в подклассе добавляется вывод компании к прочим данным.
+
+class Person:
+    def __init__(self, name):
+        self.__name = name
+    @property
+    def name(self):
+        return self.__name
+    def show_info(self):
+        print(f"Меня зовут: {self.__name}")
+class Worker(Person):
+    def __init__(self, name, comp):
+        super().__init__(name)
+        self.__comp = comp
+    def show_info(self):
+        super().show_info()
+        print(f"Я работаю в: {self.__comp}")
+neo = Worker("Neo", "Microsoft")
+neo.show_info()
