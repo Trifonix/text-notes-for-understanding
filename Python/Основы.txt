@@ -866,3 +866,62 @@ what_to_do(vim)
 
 === Атрибуты классов и статические методы ===
 
+Атрибуты можно задать не только объекту, но и классу.
+
+class Person:
+    type = "Person"
+    def __init__(self, name):
+        self.name = name
+
+tom = Person("Tom")
+bob = Person("Bob")
+
+print(f"""{tom.name} {tom.type}
+{bob.name} {bob.type}
+{Person.type}""")
+
+Person.type = "Class Person"
+
+print(f"""{tom.name} {tom.type}
+{bob.name} {bob.type}
+{Person.type}""")
+
+Атрибуты класса можно использовать как значения по-умолчанию для атрибутов объекта.
+
+class Animal:
+    default_name = "Cute Dog"
+    def __init__(self, name):
+        if name:
+            self.name = name
+        else:
+            self.name = Animal.default_name
+
+rex = Animal("")
+print(rex.name)
+
+Если в классе не задан атрибут объекта, но к этому атрибуту идёт обращение в конструкторе, то будет проверка есть ли такой атрибут в классе и если есть, то будет передано значение атрибута класса.
+
+class Worker:
+    name = "Good Man"
+
+    def show_info(self):
+        print(self.name)
+
+work_man = Worker()
+work_man.show_info()
+work_man.name = "Tim"
+work_man.show_info()
+
+В классе могут быть статические методы. Это такие методы, которые применяются в общем ко всему классу. Например, есть класс Person, в нём есть приватный атрибут __type и статический метод print_type(), который будет выводить атрибут класса. Есть два способа вызвать статический метод класса: через Имя_класса.print_type() или через имя_объекта.print_type()
+
+class Person:
+    __type = "Person"
+
+    @staticmethod
+    def print_type():
+        print(Person.__type)
+
+Person.print_type()
+
+bob = Person()
+bob.print_type()
