@@ -945,3 +945,8 @@ class Worker:
 
 neo = Worker("Neo", 28)
 print(neo)
+
+
+
+=== Перегрузка операторов ===
+
