@@ -829,3 +829,35 @@ class Worker(Person):
         print(f"Я работаю в: {self.__comp}")
 neo = Worker("Neo", "Microsoft")
 neo.show_info()
+
+Объекты можно проверять на тип функцией isinstance().
+
+class Person:
+    def __init__(self, name):
+        self.__name = name
+    @property
+    def name(self):
+        return self.__name
+    def do_nothing(self):
+        print(f"Меня зовут {self.name} и я ничего не делаю")
+class Worker(Person):
+    def work(self):
+        print(f"Меня зовут {self.name} и я ГОТОВ ВКАЛЫВАТЬ")
+class Student(Person):
+    def study(self):
+        print(f"Меня зовут {self.name} и я пошёл учиться")
+def what_to_do(npc):
+    if isinstance(npc, Worker):
+        npc.work()
+    elif isinstance(npc, Student):
+        npc.study()
+    elif isinstance(npc, Person):
+        npc.do_nothing()
+neo = Person("Neo")
+smith = Worker("Smith")
+vim = Student("Vim")
+what_to_do(neo)
+what_to_do(smith)
+what_to_do(vim)
+
+Такая реализация будет работать, но не совсем в рамках принципа ООП полиморфизм. Здесь лучше всем классам задать единый метод (например `do`), чтобы объект каждого класса сам определял, что ему запускать. Тогда проверка на isinstance будет не нужна.
