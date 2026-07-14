@@ -930,3 +930,18 @@ bob.print_type()
 
 === Класс object. Строковое представление объекта ===
 
+У всех классов есть супер-класс object. У этого супер-класса есть метод __str__ который возвращает строковое представление объекта. Если вывести в консоль сам объект, то туда попадёт строка вида `<__main__.Worker object at 0x0000017528078EC0>`. Можно переопределить метод __str__ для объектов в классе, чтобы выводить более информативные данные о самих объектах.
+
+class Worker:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def display_info(self):
+        print(self)
+
+    def __str__(self):
+        return f"Я {self.name} и мне {self.age} лет"
+
+neo = Worker("Neo", 28)
+print(neo)
