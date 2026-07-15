@@ -1401,3 +1401,31 @@ print(random.choice(weapons))   # pike
 
 === Модуль secrets ===
 
+В этом модуле методы для генерации паролей и они более криптографические, чем в random. Там три функции: choice(seq), randbelow(upper), randbits(k).
+
+Можно сгенерировать 8-ми символьный пароль из букв и цифр. Для этого нужно дополнительно импортировать модуль string. В нём есть переменная ascii_letters, в которой хранится значение букв `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`, а в digits хранятся цифры `0123456789`. Далее общая строка с буквами и цифрами записывается в переменную chars. Далее в строковый метод join без разделителя передаётся генератор, который производит 8 символов через передачу общей строки в функцию choice().
+
+import secrets
+import string
+chars = string.ascii_letters + string.digits
+pswrd = "".join(secrets.choice(chars) for i in range(8))
+print(pswrd)    # DuL8fdUk
+
+Можно написать более сложную функцию, которая будет делать пароль из минимум 1 строчной, 1 заглавной буквы, 1 цифры и 1 символа. Здесь дополнительно готовый пароль посимвольно проходит 4 проверки и если минимум 1 такой символ есть, то весь пароль возвращается из функции.
+
+from secrets import choice
+from string import ascii_letters, digits, punctuation
+
+def generate_password(length=8):
+    chars = ascii_letters + digits + punctuation
+    while True:
+        pswrd = "".join(choice(chars) for _ in range(length))
+        if (
+            any(c.islower() for c in pswrd) and
+            any(c.isupper() for c in pswrd) and
+            any(c.isdigit() for c in pswrd) and
+            any(c in punctuation for c in pswrd)
+        ):
+            return pswrd
+
+print(generate_password())
