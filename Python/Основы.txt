@@ -1366,3 +1366,8 @@ def print_message(hello):
 import message
 print(message.hello)
 message.print_message("Hello everybody!")
+
+
+
+=== Генерация байткода модулей ===
+
