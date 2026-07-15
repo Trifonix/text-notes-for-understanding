@@ -49,7 +49,7 @@ List comprehension *
 Математические функции и модуль math @
 Модуль locale @
 Модуль decimal *
-Модуль dataclasses. Data-классы
+Модуль dataclasses. Data-классы *
 Модуль timeit
 Установка пакетов, pip и виртуальная среда
 Пакетный менеджер uv, poetry

@@ -1525,3 +1525,57 @@ print(number)                   # 0.4000
 
 === Модуль dataclasses. Data-классы ===
 
+Этот модуль подключает декоратор, которым можно сократить код класса без методов, с атрибутами и типизацией. Например, есть класс Person с двумя атрибутами.
+
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+pers = Person("Neo", 28)
+print(pers.name)                    # Neo
+
+Можно создать такой класс через декоратор @dataclass, который устанавливается перед декларацией класса.
+
+from dataclasses import dataclass
+
+@dataclass
+class Person:
+    name: str
+    age: int
+
+neo = Person("Neo", 28)
+print(f"My name is {neo.name} ({type(neo.name)}) "
+      f"and I am {neo.age} ({type(neo.age)}) y.o.")
+# My name is Neo (<class 'str'>) and I am 28 (<class 'int'>) y.o.
+
+На самом деле в полном виде вместо 4 строк декларации класса с датаклассом он будет в следующем виде. Кроме конструктора в таком классе ещё будет метод __repr__, который возвращает строковое представление объекта и метод __eq__, который сравнивает два объекта.
+
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def __repr__(self):
+        return f"Person(name={self.name!r}, age={self.age!r})"
+    
+    def __eq__(self, other):
+        if other.__class__ is self.__class__:
+            return (self.name, self.age) == (other.name, other.age)
+        return NotImplemented
+
+Эти два метода можно использовать для вывода объекта в виде строки и для сравнения двух объектов.
+
+from dataclasses import dataclass
+ 
+@dataclass
+class Person:
+    name: str
+    age: int
+
+neo = Person("Neo", 28)
+smith = Person("Smith", 32)
+neo_new = Person("Neo", 28)
+
+print(neo)                  # Person(name='Neo', age=28)
+print(neo == smith)         # False
+print(neo == neo_new)       # True
