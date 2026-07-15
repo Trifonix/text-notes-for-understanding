@@ -1300,3 +1300,14 @@ print(numbers2) # [1, 3, 5, 8, 12]
 
 === Упаковка и распаковка ===
 
+Деструктуризация, распаковка, unpacking, множественное присваивание. Это разложение коллекции (список, кортеж) на отдельные значения. При разложении словаря в переменные попадут его ключи.
+
+a, b, c = 1, 2, 4
+print(a, b, c) # 1 2 4
+
+one, two, three = ["one", "two", "three"]
+print(one, two, three) # one two three
+
+dict1, dict2, dict3, = {1: "empty", "second": True, "3": 42}
+print(dict1, dict2, dict3) # 1 second 3
+
