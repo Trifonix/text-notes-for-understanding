@@ -35,7 +35,7 @@ except и обработка разных типов исключений
 Списки ( shuffle, .sort( key=lambda x: x[-1], reverse=True ) ) *
 Кортежи *
 Диапазоны @
-Словари
+Словари *
 Множества
 List comprehension
 Упаковка и распаковка
