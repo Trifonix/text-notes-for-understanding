@@ -1262,3 +1262,8 @@ print(f"{set1} ; {set2}") # {1, 2, 3, 4} ; {'two', 'one'}
 seting = {1, 2, 3, 4}
 seting.add(5)
 print(seting) # {1, 2, 3, 4, 5}
+
+
+
+=== List comprehension ===
+
