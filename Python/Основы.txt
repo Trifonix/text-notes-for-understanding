@@ -1462,3 +1462,8 @@ numbers = [int(random()*100) for x in range(4)]
 print(numbers)          # [50, 1, 64, 98]
 print(min(numbers))     # 1
 print(max(numbers))     # 98
+
+
+
+=== Модуль locale ===
+
