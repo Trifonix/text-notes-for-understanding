@@ -1489,3 +1489,8 @@ print(formatted_money)      # 404,20 ₽  Вывод в рублях
 
 import locale
 print(locale.getlocale())   # ('Russian_Russia', '1251')
+
+
+
+=== Модуль decimal ===
+
