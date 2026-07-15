@@ -46,7 +46,7 @@ List comprehension *
 Генерация байткода модулей *
 Модуль random @
 Модуль secrets * 
-Математические функции и модуль math
+Математические функции и модуль math @
 Модуль locale
 Модуль decimal
 Модуль dataclasses. Data-классы
