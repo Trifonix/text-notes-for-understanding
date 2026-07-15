@@ -1098,3 +1098,14 @@ except ZeroDivisionError as e:
 
 === Генерация исключений и создание своих типов исключений ===
 
+Можно создавать свои исключения через ключевое слово `raise` и создание объекта типа `Exception`.
+
+try:
+    age = int(input("Введите возраст: "))
+    if not 1 <= age <= 120:
+        raise Exception("Ошибочный возраст")
+    print(f"Вам: {age} лет")
+except ValueError:
+    print("Ошибка данных")
+except Exception as e:
+    print(e)
