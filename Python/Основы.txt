@@ -1109,3 +1109,8 @@ except ValueError:
     print("Ошибка данных")
 except Exception as e:
     print(e)
+
+
+
+=== Списки ===
+
