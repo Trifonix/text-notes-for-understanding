@@ -1429,3 +1429,8 @@ def generate_password(length=8):
             return pswrd
 
 print(generate_password())
+
+
+
+=== Математические функции и модуль math ===
+
