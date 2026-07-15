@@ -1520,3 +1520,8 @@ from decimal import Decimal
 number = Decimal("0.1000")
 number *= 4
 print(number)                   # 0.4000
+
+
+
+=== Модуль dataclasses. Data-классы ===
+
