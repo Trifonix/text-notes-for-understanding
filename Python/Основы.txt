@@ -1060,3 +1060,36 @@ print("The end")
 
 === except и обработка разных типов исключений ===
 
+Базовые типы исключений в питоне: BaseException, Exception, ArithmeticError (ZeroDivisionError), BufferError, LookupError (IndexError, KeyError).
+
+Можно указывать несколько исключений в блоке try-except, тогда будет выбрано подходящее.
+
+try:
+    num1 = int(input("Введите число 1: "))
+    num2 = int(input("Введите число 2: "))
+    result = num1 / num2
+except ValueError:
+    print("Преобразование прошло неудачно")
+except ZeroDivisionError:
+    print("Попытка деления числа на ноль")
+except BaseException:
+    print("Общее исключение")
+print("Завершение программы")
+
+Или можно указать несколько исключений в скобках, тогда при появлении одного из них будут выполнены нужные инструкции.
+
+try:
+    num1 = int(input("Введите число 1: "))
+    num2 = int(input("Введите число 2: "))
+    result = num1 / num2
+except (ValueError, ZeroDivisionError, BaseException):
+    print("Ошибка ввода данных")
+
+Можно получать информацию об исключении через ключевое слово `as` и записью в переменную.
+
+try:
+    num1 = int(input("Введите число 1: "))
+    num2 = int(input("Введите число 2: "))
+    result = num1 / num2
+except ZeroDivisionError as e:
+    print(f"Ошибка ввода данных, прочитайте: \"{e}\"")
