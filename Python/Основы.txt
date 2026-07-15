@@ -1467,3 +1467,25 @@ print(max(numbers))     # 98
 
 === Модуль locale ===
 
+Есть две системы форматирования чисел: английская и европейская. В английской дробная часть через `точку`, а разряды через `запятую`. В европейской наоборот: дробная часть через `запятую`, а разряды через `точку`.
+
+В модуле locale есть функция setlocale(категория, локаль). Есть 6 категорий: LC_ALL, LC_NUMERIC, LC_MONETARY, LC_TIME, LC_CTYPE, LC_COLLIATE. Локаль - это обычно код страны по ISO. 
+
+Для форматирования чисел и валют есть две функции: currency(num) и format_string(str, num). Вместо str передаются плейсхолдеры: %d, %f и %e. Можно ограничивать вывод дробной части до нужного количества знаков, например до двух - `%.2f`.
+
+import locale
+
+locale.setlocale(locale.LC_ALL, "ru")
+
+number = 1234.5678
+formatted_num = locale.format_string("%.2f", number)
+print(formatted_num)        # 1234,57   Заменит `точку` на `запятую`
+
+money = 404.200
+formatted_money = locale.currency(money)
+print(formatted_money)      # 404,20 ₽  Вывод в рублях
+
+Через функцию getlocale() можно получить культуру (локаль) текущей машины.
+
+import locale
+print(locale.getlocale())   # ('Russian_Russia', '1251')

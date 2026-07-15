@@ -47,7 +47,7 @@ List comprehension *
 Модуль random @
 Модуль secrets * 
 Математические функции и модуль math @
-Модуль locale
+Модуль locale @
 Модуль decimal
 Модуль dataclasses. Data-классы
 Модуль timeit
