@@ -1332,3 +1332,8 @@ def sum(*args):
         sum += arg
     return sum
 print(sum(1, 2, 4, 6, 8, 10, 11)) # 42
+
+
+
+=== Функция zip ===
+
