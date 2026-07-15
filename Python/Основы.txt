@@ -1396,3 +1396,8 @@ print(random.randrange(2, 20, 5))   # 17
 import random
 weapons = ['sword', 'pike', 'knife', 'shield']
 print(random.choice(weapons))   # pike
+
+
+
+=== Модуль secrets ===
+
