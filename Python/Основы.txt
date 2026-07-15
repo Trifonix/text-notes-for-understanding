@@ -1200,3 +1200,8 @@ print(tupling)  # (1, 2, 3, 4, 5)
 
 tupl = (1, 2, 3, 4, 5, True)
 print(len(tupl))                # 6
+
+
+
+=== Диапазоны ===
+
