@@ -48,7 +48,7 @@ List comprehension *
 Модуль secrets * 
 Математические функции и модуль math @
 Модуль locale @
-Модуль decimal
+Модуль decimal *
 Модуль dataclasses. Data-классы
 Модуль timeit
 Установка пакетов, pip и виртуальная среда
