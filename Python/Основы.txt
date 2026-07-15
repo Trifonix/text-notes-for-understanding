@@ -1379,3 +1379,20 @@ message.print_message("Hello everybody!")
 
 === Модуль random ===
 
+Генерация случайных чисел. Основные функции: random() ; randint() ; randrange() .
+
+import random
+
+print(random.random())              # 0.07136321184997885
+print(random.random() * 100)        # 81.91627405011687
+
+print(random.randint(1, 42))        # 12
+
+print(random.randrange(2, 20))      # 16
+print(random.randrange(2, 20, 5))   # 17
+
+И две функции для работы со списком: shuffle() и choice() - возвращает один случайный элемент из списка.
+
+import random
+weapons = ['sword', 'pike', 'knife', 'shield']
+print(random.choice(weapons))   # pike
