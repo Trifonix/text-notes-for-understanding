@@ -1239,3 +1239,8 @@ print(users) # {'user1': 'Neo', 'user2': 'Smith'}
 dict1 = {}
 dict2 = dict()
 print(f"{dict1} , {dict2}") # {} , {}
+
+
+
+=== Множества ===
+
