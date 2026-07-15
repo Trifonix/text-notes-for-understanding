@@ -1114,3 +1114,64 @@ except Exception as e:
 
 === Списки ===
 
+Пустой список создаётся через `[]` или `list()`. В список можно записывть данные разных типов. Можно создавать новый список из массива данных, например числа или строка.
+
+numbers = [1, 2, 3, 4]
+numbers_new = list(numbers)
+print(numbers_new)          # [1, 2, 3, 4]
+
+listing = list("Hello")
+print(listing)              # ['H', 'e', 'l', 'l', 'o']
+
+Можно умножать список через `*`.
+
+text = ["Kill", "Bill"] * 4
+print(text)
+
+Обращаться к элементам списка можно через индекс `[номер]`.
+
+text = ["Kill", "Bill"]
+print(text[1])              # Bill
+
+По индексу можно присваивать элементу списка новое значение.
+
+text = ["Kill", "Bill"]
+text[0] = "Save"
+print(text)              # ['Save', 'Bill']
+
+Список можно разложить на переменные.
+
+text = ["Kill", "Bill"]
+first_word, second_word = text
+print(f"{first_word} {second_word}")    # Kill Bill
+
+Можно перебирать элементы списка через `for` и через `while`.
+
+nums = [2, 4, 6, 8]
+for num in nums:
+    print(num)
+
+text = ['one', 'two', 'three']
+i = 0
+while i < len(text):
+    print(text[i])
+    i += 1
+
+Из модуля random можно подключить функцию shuffle(), которая меняет порядок элементов в исходном списке.
+
+import random
+nums = [2, 4, 6, 8, 1, 9, 5, 7]
+random.shuffle(nums)
+print(nums) # [5, 6, 9, 1, 2, 8, 7, 4]
+
+Есть встроенный метод sort() который меняет исходный список и возвращает None. Метод sort() принимает 2 параметра: key и reverse. В key можно передать функцию, которая будет применяться к каждому элементу списка. А в reverse можно передать True/False, если True - то сортировка будет по убыванию.
+
+nums = [2, 4, 6, 8, 1, 9, 5, 7]
+nums.sort()
+print(nums) # [1, 2, 4, 5, 6, 7, 8, 9]
+
+Если в `key` для sort передать лямбда-функцию `lambda x: x[-1]`, а `reverse` сделать `True, то строковые элементы списка будут сортироваться по последней букве и в обратном порядке по алфавиту (Z-A). То есть сначала пойдут слова, у которых последняя буква ближе к концу алфавита ('x', затем 'r', затем 'o' и так далее).
+
+text = ['one', 'two', 'three', 'four', 'five', 'six', 'seven']
+text.sort(key=lambda x: x[-1], reverse=True)
+print(text) # ['six', 'four', 'two', 'seven', 'one', 'three', 'five']
