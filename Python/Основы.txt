@@ -1917,3 +1917,39 @@ print(", ".join(map(str, nums))) # 1, 2, 3, 4, end, False
 data = ["Smith", "32", "New-York"]
 csv_line = ",".join(data)
 print(csv_line) # Smith,32,New-York
+
+
+
+=== Открытие и закрытие файлов ===
+
+Два вида файлов: текстовые (txt, csv, md, html) и бинарные (фото, видео, аудио).
+
+Последовательность работы с файлами:
+1. open()
+2. read()
+3. write()
+4. close()
+
+В питон файл открывается через функцию open(file, mode). Параметр file - это путь к файлу. Пути бывают абсолютные и относительные. Параметр mode - это режим доступа к файлу: `r` - Read, `w` - Write, `a` - Append, `b` - Binary, `r+` - Чтение и Запись / исключение FileNotFound Error, `w+` - Чтение и Запись / создание-перезапись файла, `a+` - Чтение и Запись / создание-дозапись файла.
+
+В примитивном виде работа с файлом может быть такой:
+
+myfile = open("text.txt", "w")
+myfile.close()
+
+Часто из-за проблем с доступом в файлам могут выбрасываться исключения, которые можно обрабатывать.
+
+try:
+    myfile = open("text.txt", "r")
+    try:
+        print("Работа с текстовым файлом")
+    finally:
+        myfile.close()
+except Exception as e:
+    print(f"Тут ошибка: {e}")
+# Тут ошибка: [Errno 2] No such file or directory: 'text.txt'
+
+Есть более удобная конструкция `with`, которая закрывает файл в конце автоматически.
+
+with open("text.txt", "w") as myfile:
+    print(f"Начата работа с файлом `/{myfile.name}`")
