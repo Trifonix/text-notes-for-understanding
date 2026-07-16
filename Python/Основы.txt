@@ -1579,3 +1579,48 @@ neo_new = Person("Neo", 28)
 print(neo)                  # Person(name='Neo', age=28)
 print(neo == smith)         # False
 print(neo == neo_new)       # True
+
+
+
+=== Модуль timeit ===
+
+Это модуль с таймерами. Основная функция timeit(). Она может принимать 5 параметров: stmt (проверяемая функция) ; setup (импорт модулей) ; timer (объект timeit.Timer) ; number (сколько раз выполнится stmt) ; globals (пространство имён).
+
+import timeit
+
+def sum():
+    res = 0
+    for i in range(10000):
+        res += 1
+    return res
+
+exe_time = timeit.timeit(lambda: sum(), number=100)
+print(f"Программа выполнялась: {str(exe_time)[:5]} сек") # 0.029 сек
+
+Кроме вызова кастомной функции через лямбду можно передавать в stmt строку. Тут вычисляется выражение `10+42`. Можно проверять длинные инструкции, тогда строка будет вида `a=4; b=6; a+b`. Или если кода слишком много, то его можно поместить в тройные кавычки `'''code'''`.
+
+import timeit
+act = "10+42"
+print(f"{str(timeit.timeit(act))[:5]} сек") # 0.007 сек
+
+Для импорта функции из модуля в timeit() передаются две строки, одна с запуском функции, вторая с импортом модуля.
+
+import timeit
+acti = "good_sum()"
+setu = "from test import good_sum"
+print(timeit.timeit(acti, setup=setu))
+
+Сам таймер работает через функцию timeit.default_timer(), значение которой можно записать в `start`, а потом вычесть его из timeit.default_timer().
+
+import timeit
+
+def sub():
+    res = 100000111101001
+    for x in range(10001112):
+        res -= x
+    return res
+
+start = timeit.default_timer()
+print("Start: ", start)
+sub()
+print("Exe time: ", timeit.default_timer() - start)
