@@ -1848,3 +1848,18 @@ print(len(text))        # 5
 text = "Hello World"
 print("hello" in text.lower())
 print("Universe" not in text)
+
+
+
+=== Основные методы строк ===
+
+Такие: isalpha() - True если буквы ; islower() - True если нижние ; isupper() - True если верхние ; isdigit() - True если цифры ; isnumeric() - True если число ; startswith(str) - True если начинается с `str` ; endswith(str) - True если заканчивается на `str` ; lower() - всё вниз ; upper() - всё наверх ; title() - первые буквы большие ; capitalize() - первая буква первого слова большая ; strip() - удаляет пробелы слева и справа ; lstrip() - удаляет пробелы слева ; rstrip() - удаляет пробелы справа ; center(width) - новые пробелы слева и справа по длине width ; ljust(width) - новые пробелы слева по длине width ; rjust(width) - новые пробелы справа по длине width ; find(str[, start[, end]]) - индекс подстроки в строке или `-1` ; replace(old, new[, num]) - замена подстроки подстрокой ; split([delimeter[, num]]) - разделение на подстроки по разделителю ; partition(delimeter) - разбивка на кортеж из трёх секций с разделителем ; join(strs) - объединение строк по разделителю .
+
+text = "Hello, world! Goodbye world! java alive"
+
+print(text.find("world"))               # Вывод: 7 (первое вхождение)
+print(text.find("wor", 8))              # Вывод: 22 (поиск с 8-го индекса)
+print(text.find("wor", 8, 22))          # Вывод: -1 (в диапазоне 8:22 подстроки нет)
+print(text.find("Java".lower()))        # Вывод: 29 (не найдено)
+
+print(text.partition('!'))  # ('Hello, world', '!', ' Goodbye world! java alive')
