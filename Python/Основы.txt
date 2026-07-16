@@ -1624,3 +1624,25 @@ start = timeit.default_timer()
 print("Start: ", start)
 sub()
 print("Exe time: ", timeit.default_timer() - start)
+
+
+
+=== Установка пакетов, pip и виртуальная среда ===
+
+Менеджер пакетор pip, 800 000+ пакетов. В системе проверяется командой `pip --version` (pip 26.1.2). Команда установки pip `python -m ensurepip --upgrade`. Обновление `python -m pip install --upgrade pip`.
+
+Для изоляции пакетов от системных настроек питона рекомендуется устанавливаться виртуальную среду (в Linux обязательно, в Windows желательно). Виртуальная среда - это для разных проектов разные версии пакетов.
+
+Для работы с виртуальной средой есть модуль venv. В Linux его часто нет, устанавливается командой `sudo apt install python3-venv`. После перехода в директорию проекта команда для создания виртуального окружения `python -m venv myvenv`. Виртуальную среду надо активировать, в Windows через cmd команда будет `myvenv\Scripts\activate.bat` или через Git Bash командой `source myvenv/Scripts/activate`. В конце работы с виртуальной средой её надо отключить командой `deactivate`.
+
+Пример установки пакета командой `pip install matplotlib`. Команда проверки установки пакета `python -c "import matplotlib; print(matplotlib.__version__)"`. Можно проверить все пакеты командой `pip list`. Команда просмотра информации о пакете `pip show matplotlib`. Удаляются пакеты командой `pip uninstall matplotlib`.
+
+Проверить работу менеджера пакетов pip можно через тестовую программу с графиком.
+
+import matplotlib.pyplot as plt
+months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+rates = [13.58,  15.33, 14.26, 13.92, 12.74, 12.2, 13.44, 15.63, 15.74, 17.08, 17.18, 16.66]
+plt.xlabel("Месяц")
+plt.ylabel("Показатель")
+plt.plot(months, rates)
+plt.show()
