@@ -1714,3 +1714,52 @@ def total(nums):
         breakpoint()
     return s
 print(total([1, "2", 3, 4]))
+
+
+
+=== Модуль sched и выполнение действий по расписанию ===
+
+Планировщик позволяет выполнять действия с задержкой или через заданные интервалы времени. Временная функция (timefunc) возвращает текущее значение времени, функция задержки (delayfunc) приостанавливает выполнение программы на указанное количество секунд.
+
+В модуле sched есть класс scheduler, который принимает два параметра: timefunc и delayfunc. Для timefunc удобно брать функцию time.monotonic(), а для delayfunc функцию time.sleep().
+
+import sched
+import time
+s = sched.scheduler(time.monotonic, time.sleep)
+
+Для добавления события в планировщик есть два метода: enter(delay, priority, action, arguments=(), kwargs={}) - планирует событие через указанное количество секунд; enterabs(time, priority, action, arguments=(), kwargs={}) - планирует событие на абсолютный момент времени. Выполнение запланированных событий запускается методом scheduler.run(blocking=True).
+
+import sched
+import time
+
+def print_msg():
+    print("Hello World!!!")
+
+s = sched.scheduler(time.monotonic, time.sleep)
+print("Начинается планирование...")
+
+s.enter(5, 1, print_msg, (), {})
+
+s.run()
+
+print("Планированию конец!")
+
+Если нескольким событиям нужно назначить один и тот же момент выполнения, удобнее использовать метод enterabs(). Здесь первому событию (+6 секунд) выставляется приоритет `2`, а второму событию (+6 секунд) приоритет `1`. В таком случае сначала будет вызвано событие с более высоким приоритетом `1`.
+
+from sched import scheduler
+from time import monotonic, sleep, strftime, localtime
+
+s = scheduler(monotonic, sleep)
+
+def print_msg(msg):
+    print(f"[{strftime("%H:%M:%S", localtime())}] - {msg}")
+
+t = monotonic()
+s.enterabs(t+4, 1, print_msg, ("1-е смс через 4 сек", ), {})
+s.enterabs(t+6, 2, print_msg, ("2-е смс через 6 сек, низкий приоритет", ), {})
+s.enterabs(t+6, 1, print_msg, ("2-е смс через 6 сек", ), {})
+
+s.run()
+print("The end!")
+
+При использовании enter() два вызова enter(6, ...) обычно создают события с немного разным временем выполнения (из-за времени между вызовами), поэтому приоритет может не повлиять на порядок их выполнения. Именно поэтому для демонстрации работы priority удобнее использовать enterabs().
