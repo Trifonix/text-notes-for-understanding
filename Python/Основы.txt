@@ -1984,3 +1984,41 @@ print("Новые строки дописаны в файл")
 with open("text.txt", 'a') as file:
     print("\nAdd one more line", file=file, end='')
 print("Done")
+
+
+
+=== Файлы CSV ===
+
+Формат csv - это удобный текстовый формат для файлов с табличными данными - строки через запятую (Comma Separated Values). В питоне для работы с такими файлами есть модуль csv.
+
+Сначала импортируется модуль csv. Далее имя файла добавляется в константу FILENAME. Далее создаётся список списков значений колонок будущей таблицы (двумерный массив, матрица). Потом в режиме записи открывается файл и сначала к нему применяется метод writer() из модуля csv с записью в переменную, затем к полученному объекту применяется метод .writerows(), в который передаются строки для таблицы. Чтобы добавить новую строку достаточно изменить режим доступа на `a`, задать локальной переменной значение новой строки (одномерный список) и применить к объекту csv-файла метод writerow(). Желательно передавать в open() третим аргументом `newline=""`, чтобы файл корректно записывался на любой операционной системе и чтобы питон не вставлял лишние пустые строки.
+
+import csv
+
+FILENAME = "text.csv"
+
+strings = [
+    ["Neo", 28, "Good"],
+    ["Smith", 33, "Evil"],
+    ["Trinity", 27, "Neutral-Good"],
+]
+
+with open(FILENAME, 'w', newline="") as file:
+    writer = csv.writer(file)
+    writer.writerows(strings)
+
+with open(FILENAME, 'a', newline="") as file:
+    new_string = ["Morpheus", 42, "Neutral"]
+    writer = csv.writer(file)
+    writer.writerow(new_string)
+
+Для чтения готового csv-файла применяется метод, создающий объект reader.
+
+import csv
+
+FILENAME = "text.csv"
+
+with open(FILENAME, 'r', newline="") as file:
+    reader = csv.reader(file)
+    for row in reader:
+        print(f"{row[0]}: {row[1]}, {row[2]}")
