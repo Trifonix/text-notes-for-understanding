@@ -1863,3 +1863,26 @@ print(text.find("wor", 8, 22))          # Вывод: -1 (в диапазоне 
 print(text.find("Java".lower()))        # Вывод: 29 (не найдено)
 
 print(text.partition('!'))  # ('Hello, world', '!', ' Goodbye world! java alive')
+
+
+
+=== Форматирование (f-строка, .format() ) ===
+
+Есть f-строки, а есть метод строки `.format()`. В f-строке можно значения переменных или выражения указывать прямо в строке в `{}`, а через `.format()` можно выводить значения через параметры в плейсхолдеры.
+
+# пример f-строки
+a, b, c = 1, 2, 4
+f_string = f"{a}+{b}+{c}={a+b+c}"   # 1+2+4=7
+print(f_string)
+
+Далее приводятся примеры метода `.format()`.
+
+# Именованные параметры
+your_name = input("Your name? ") or "user"
+text = "Hello, {name}!".format(name=your_name)
+print(text)
+
+# Позиционные параметры
+name, age = "Newbie", 2
+info = "Name={0}, Age={1}{1}".format(name, age)
+print(info)
