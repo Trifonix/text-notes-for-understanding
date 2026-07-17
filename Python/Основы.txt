@@ -2139,3 +2139,173 @@ if os.path.exists(FILENAME):
     os.rename(FILENAME, "new-good-filename.txt")
 else:
     print(f"Увы, файла {FILENAME} тут нет")
+
+
+
+=== Программа подсчета слов ===
+
+Для решения задачи написания программы подсчёта слов в файле сначала можно написать скелет программы. Программа будет подключать 1 модуль, будет состоять из 3 функций и вызываться в ней будет функция main(), если запускаемый скрипт - main.py.
+
+import os
+
+def get_words(filename):
+    pass
+
+def get_words_dict(words):
+    pass
+
+def main():
+    pass
+
+if __name__ == "__main__":
+    main()
+
+Точкой входа в программе будет функция main(). Сначала пользователь вводит путь к файлу или имя файла. Это значение записывается в переменную filename. Далее идёт проверка существования такого файла (пути). Если файла нет - выводится сообщение, иначе программа продолжает работу.
+
+import os
+
+def get_words(filename):
+    pass
+
+def get_words_dict(words):
+    pass
+
+def main():
+    filename = input("Введите путь к файлу: ")
+    if not os.path.exists(filename):
+        print("Такого файла нет")
+    else:
+        pass
+
+if __name__ == "__main__":
+    main()
+
+Далее пишется функция get_words(), которая принимает filename и начинает его обработку. Сначала весь текст файла записывается в переменную text в виде строки. Далее из переменной текст все переводы на новую строку заменяются на пробелы, чтобы текст был в одну строку. Далее последовательно удаляются символы запятой, точки, вопросительного и восклицательного знака, скобок, двойных кавычек. Далее все символы текста приводятся к нижнему регистру, чтобы в дальнейшем сформировать единый список слов. Далее все слова текста добавляются в список words. Далее список words сортируется по алфавиту. И в конце функция get_words() возвращает готовый список слов.
+
+import os
+
+def get_words(filename):
+    with open(filename, encoding="utf8") as file:
+        text = file.read()
+    text = text.replace('\n', " ")
+    text = (text
+            .replace(',', "")
+            .replace('.', "")
+            .replace('?', "")
+            .replace('!', "")
+            .replace('(', "")
+            .replace(')', "")
+            .replace('"', "")
+    )
+    text = text.lower()
+    words = text.split()
+    words.sort()
+    return words
+
+def get_words_dict(words):
+    pass
+
+def main():
+    filename = input("Введите путь к файлу: ")
+    if not os.path.exists(filename):
+        print("Такого файла нет")
+    else:
+        words = get_words(filename)
+
+if __name__ == "__main__":
+    main()
+
+Теперь пишется функция get_words_dict(), которая принимает полученный из функции get_words() список слов. Сначала она создаёт локальный пустой словарь words_dict. Далее она запускает цикл for, который перебирает все элементы списка и если такое слово в словаре есть в виде ключа, то его значение увеличиваетя на 1. Иначе это слово добавляется в словарь со значением 1.
+
+import os
+
+def get_words(filename):
+    with open(filename, encoding="utf8") as file:
+        text = file.read()
+    text = text.replace('\n', " ")
+    text = (text
+            .replace(',', "")
+            .replace('.', "")
+            .replace('?', "")
+            .replace('!', "")
+            .replace('(', "")
+            .replace(')', "")
+            .replace('"', "")
+    )
+    text = text.lower()
+    words = text.split()
+    words.sort()
+    return words
+
+def get_words_dict(words):
+    words_dict = dict()
+    for word in words:
+        if word in words_dict:
+            words_dict[word] += 1
+        else:
+            words_dict[word] = 1
+    return words_dict
+
+def main():
+    filename = input("Введите путь к файлу: ")
+    if not os.path.exists(filename):
+        print("Такого файла нет")
+    else:
+        words = get_words(filename)
+        words_dict = get_words_dict(words)
+
+if __name__ == "__main__":
+    main()
+
+Дальше дописывается функция main(), в которую попадает готовый словарь слов. Выводятся строки с символами 'равно' для удобного восприятия в консоли. Выводится статистика по словам: сколько всего слов в тексте, сколько уникальных слов и краткий список слов с количеством вхождений. На этом программа из 50 строк завершается.
+
+import os
+
+def get_words(filename):
+    with open(filename, encoding="utf8") as file:
+        text = file.read()
+    text = text.replace('\n', " ")
+    text = (text
+            .replace(',', "")
+            .replace('.', "")
+            .replace('?', "")
+            .replace('!', "")
+            .replace('(', "")
+            .replace(')', "")
+            .replace('"', "")
+    )
+    text = text.lower()
+    words = text.split()
+    words.sort()
+    return words
+
+def get_words_dict(words):
+    words_dict = dict()
+    for word in words:
+        if word in words_dict:
+            words_dict[word] += 1
+        else:
+            words_dict[word] = 1
+    return words_dict
+
+def main():
+    filename = input("Введите путь к файлу: ")
+    if not os.path.exists(filename):
+        print("Такого файла нет")
+    else:
+        words = get_words(filename)
+        words_dict = get_words_dict(words)
+        print('='*21)
+        print(f"Всего слов: {len(words)}")
+        print('='*21)
+        print(f"Уникальных слов: {len(words_dict)}\n")
+        print("Обнаруженные слова:")
+        print('='*42)
+        for index, word in enumerate(words_dict):
+            print(word.ljust(40), words_dict[word])
+            if index == 42:
+                break
+        print('='*42)
+
+if __name__ == "__main__":
+    main()
