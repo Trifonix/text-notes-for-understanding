@@ -2105,3 +2105,37 @@ with shelve.open(FILENAME) as caps:
 with shelve.open(FILENAME) as caps:
     print(caps["Spain"])
     print(caps["Great Britain"])
+
+
+
+=== Модуль OS и работа с файловой системой ===
+
+Основные функции модуля: mkdir() - создать папку ; rmdir() - удалить папку ; rename() - переименовать файл ; remove() - удалить файл .
+
+import os
+os.mkdir("newdir")          # относительный путь
+os.mkdir("c://testdir")     # абсолютный путь
+
+Удаление папки из текущего каталога.
+
+import os
+os.rmdir("testdir")
+
+Переименование файла в текущей папке.
+
+import os
+os.rename("testname.txt", "report-for-job.txt")
+
+Удаление файла из текущей папки
+
+import os
+os.remove("report-for-job.txt")
+
+При попытке открыть файл, которого нет, питон бросит исключение FileNotFoundError. Его можно поймать через try...except. В модуле os есть метод для проверки наличия файла `os.path.exists(path)`.
+
+import os
+FILENAME = "text.txt"
+if os.path.exists(FILENAME):
+    os.rename(FILENAME, "new-good-filename.txt")
+else:
+    print(f"Увы, файла {FILENAME} тут нет")
