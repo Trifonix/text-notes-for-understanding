@@ -2079,3 +2079,29 @@ with open(FILENAME, "rb") as file:
     humans_from_file = pickle.load(file)
     for human in humans_from_file:
         print(f"Name: {human[0]}\t\tAge: {human[1]}\t\tStatus: {human[2]}")
+
+
+
+=== Модуль shelve ===
+
+Это модуль в питоне, который позволяет работать с данными бинарных файлов через ключи, как со словарями. Модуль shelve используется такой шаблон функции: `open(file_path[, flag="c"[, protocol=None[, writeback=False]]])`. Параметр flag принимает такие значения: `c` - чтение и запись / создание (стандартный режим), `r` - чтение, `w`- запись, `n` - запись / создание/перезапись. Подключение к файлу закрывается методом `.close()`.
+
+import shelve
+d = shelve.open(filename)
+d.close()
+
+Можно открываться бинарники с этим модулем через `with`, тогда они будут закрываться автоматически.
+
+import shelve
+
+FILENAME = "capitals.dat"
+
+with shelve.open(FILENAME) as caps:
+    caps["Great Britain"] = "London"
+    caps["Germany"] = "Berlin"
+    caps["France"] = "Paris"
+    caps["Spain"] = "Madrid"
+
+with shelve.open(FILENAME) as caps:
+    print(caps["Spain"])
+    print(caps["Great Britain"])
