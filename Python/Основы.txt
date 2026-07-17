@@ -2022,3 +2022,60 @@ with open(FILENAME, 'r', newline="") as file:
     reader = csv.reader(file)
     for row in reader:
         print(f"{row[0]}: {row[1]}, {row[2]}")
+
+
+
+=== Бинарные файлы ===
+
+Для работы с бинарными файлами в режимам доступа `r` и `w` добавляется буква `b`. Например, нужно скопировать картинку. Сначала необходимо получить из картинки набор байт через метод read() и сохранить в список, а потом записать в файл через метод write().
+
+FILENAME = "table.png"
+NEWFILENAME = "table_new.png"
+
+image_data = []
+
+with open(FILENAME, "rb") as file:
+    image_data = file.read()
+
+with open(NEWFILENAME, "wb") as file:
+    file.write(image_data)
+
+print(f"Файл: {FILENAME} успешно скопирован в файл: {NEWFILENAME}")
+
+В питоне есть встроенный модуль pickle для удобной работы с бинарниками. В нём есть два метода: dump(obj, file) - объект и куда записать и load(file) - из какого бинарника считать данные в объект. Так можно записать значения двух переменных в бинарный файл в виде объектов и затем считать бинарный файл построчно получив данные и записав их в объекты.
+
+import pickle
+
+FILENAME = "admin.dat"
+
+name = "Neo"
+age = 28
+
+with open(FILENAME, "wb") as file:
+    pickle.dump(name, file)
+    pickle.dump(age, file)
+
+with open(FILENAME, "rb") as file:
+    name = pickle.load(file)
+    age = pickle.load(file)
+    print(f"Admin name:\t{name}\nAdmin age:\t{age}")
+
+Если в бинарный файл записать список (двумерный массив), то далее можно получить эти данные в виде объекта и прочитать для дальнейшей работы в виде списка.
+
+import pickle
+
+FILENAME = "humans.dat"
+
+humans = [
+    ["Neo", 28, True],
+    ["Smith", 33, False],
+    ["Trinity", 27, True]
+]
+
+with open(FILENAME, "wb") as file:
+    pickle.dump(humans, file)
+
+with open(FILENAME, "rb") as file:
+    humans_from_file = pickle.load(file)
+    for human in humans_from_file:
+        print(f"Name: {human[0]}\t\tAge: {human[1]}\t\tStatus: {human[2]}")
