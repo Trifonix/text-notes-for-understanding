@@ -2538,3 +2538,51 @@ print(deadline) # 2024-02-24 11:15:00
 
 deadline = datetime.strptime("05-22-2025 12:20", "%m-%d-%Y %H:%M")
 print(deadline) # 2025-05-22 12:20:00
+
+
+
+=== Операции с датами ===
+
+Для форматирования даты и времени метод `.strftime(format)`. Коды форматирования: %a, %A, %b, %B, %d, %m, %y, %Y, %H, %I, %M, %S, %f, %p, %c, %x, %X.
+
+Примеры операций.
+
+from datetime import datetime
+
+now = datetime.now()
+
+print(now.strftime("%Y-%m-%d"))         # 2026-07-20
+print(now.strftime("%d/%m/%Y"))         # 20/07/2026
+print(now.strftime("%d/%m/%y"))         # 20/07/26
+print(now.strftime("%d %B %Y (%A)"))    # 20 July 2026 (Monday)
+print(now.strftime("%d/%m/%y %I:%M"))   # 20/07/26 12:18
+
+Для вывода даты и времени в текущей локали нужен модуль locale.
+
+from datetime import datetime
+import locale
+
+locale.setlocale(locale.LC_ALL, "")
+
+now = datetime.now()
+print(now.strftime("%d %B %Y (%A)"))    # 20 Июль 2026 (понедельник)
+
+Для вычислений с датами есть класс timedelta (определение периода времени).
+
+Конструктор timedelta:
+
+timedelta([days] [, seconds] [, microseconds] [, milliseconds] [, minutes] [, hours] [, weeks])
+
+from datetime import timedelta
+
+three_hours = timedelta(hours=3)
+print(three_hours)  # 3:00:00
+
+three_hours_thirty_minutes = timedelta(hours=3, minutes=30)
+print(three_hours_thirty_minutes) # 3:30:00
+
+two_days = timedelta(2)
+print(two_days) # 2 days, 0:00:00
+
+two_days_three_hours_thirty_minutes = timedelta(days=2, hours=3, minutes=30)
+print(two_days_three_hours_thirty_minutes) # 2 days, 3:30:00
