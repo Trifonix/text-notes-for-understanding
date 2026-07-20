@@ -11,3 +11,16 @@
 Выходные данные:
 Аудит успешно завершен. Угроз не обнаружено. Система в безопасности.
 """
+requests1 = [15, 30, 120, 10, 45]
+requests2 = [12, 45, 80, 5]
+
+def check_requests(data):
+    for req in data:
+        if req >= 100:
+            return f"Обнаружена критическая угроза: {req}! Система заблокирована."        
+    return "Аудит успешно завершен. Угроз не обнаружено. Система в безопасности."
+
+result = check_requests(requests1)
+print(f"{'=' * 42}\n{result}\n{'=' * 42}")
+result = check_requests(requests2)
+print(f"{'=' * 42}\n{result}\n{'=' * 42}")
