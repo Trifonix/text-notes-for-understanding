@@ -84,4 +84,4 @@ guards или ограничения шаблонов		&
 Многопоточность (GIL, python 3.14) *
 Асинхронность *
 
-blindtyping
+blindtyping @
