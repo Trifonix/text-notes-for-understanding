@@ -2309,3 +2309,151 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+=== Запись и чтение архивных zip-файлов ===
+
+Модуль zipfile. В нём есть есть класс ZipFile. Конструктор:
+
+ZipFile(file, mode='r', compression=ZIP_STORED, allowZip64=True, compresslevel=None, *, strict_timestamps=True, metadata_encoding=None)
+
+file - путь к файлу
+
+mode - режимы: 'r', 'w', 'a'
+
+compression: ZIP_STORED (без сжатия), ZIP_DEFLATED (стандартное сжатие), ZIP_BZIP2 (сжатие через BZIP2), ZIP_LZMA (сжатие через LZMA)
+
+allowZip64 - при True файл может быть больше 4 ГБ
+
+compresslevel - уровень сжатия
+
+strict_timestamps - при False нельзя работать с файлами между 1980 и 2107 годом
+
+metadata_encoding - декодирование метаданных, например комментариев
+
+Методы класса ZipFile: close(), getinfo(), namelist(), infolist(), open(), read(), extract(), extractall(), setpassword(), printdir()
+
+Чтобы создать архивный файл в конструктор передаётся режим 'a' или 'w'. Архивный файл надо закрывать. Для этого используется или метод `.close()` или архив открывается через `with`.
+
+from zipfile import ZipFile
+
+myzip = ZipFile("text.zip", 'w')
+myzip.close()
+
+with ZipFile("text2.txt", 'w') as myzip:
+    pass
+
+Чтобы записать файл в архив используется метод `.write()`:
+
+write(filename, arcname=None, compress_type=None, compresslevel=None)
+
+Запись файлов text.txt, text2.txt в архив text.zip в режиме 'a'.
+
+from zipfile import ZipFile
+
+with ZipFile("text.zip", 'a') as myzip:
+    myzip.write("text.txt")
+    myzip.write("text2.txt")
+
+Можно добавлять к архивации сжатие.
+
+from zipfile import ZipFile, ZIP_DEFLATED
+
+with ZipFile("ZipFile.zip", 'w', compression=ZIP_DEFLATED, compresslevel=3) as mzip:
+    mzip.write("text.txt")
+
+Если попробовать добавить в архив файлы, которые в нём уже есть, то питон выбросит предупреждение (UserWarning: Duplicate name: 'text1.txt'). Чтобы этого избежать вторым параметром при добавлении файла можно задать ему уникальное имя в архиве.
+
+from zipfile import ZipFile
+from random import randint
+
+def rn():
+    return randint(1, 100)+randint(1, 100)+randint(1, 100)
+
+with ZipFile("coolzip.zip", 'a') as mz:
+    mz.write("text1.txt", f"text1-{rn()}.txt")
+    mz.write("text1.txt", f"text1-{rn()}.txt")
+    mz.write("text1.txt", f"text1-{rn()}.txt")
+
+Можно получить информацию о файлах архив в виде списка через метод `.infolist()` к файлу архива.
+
+from zipfile import ZipFile
+
+with ZipFile("mzip.zip", 'r') as mzip:
+    print(mzip.infolist())                  # каждый элемент объект ZipInfo
+
+Атрибуты класса ZipInfo: filename, data_time, compress_type, compress_size, file_size.
+
+from zipfile import ZipFile
+
+with ZipFile("mzip.zip", 'r') as mzip:
+    for _ in mzip.infolist():
+        print(f"Name: {_.filename} | Date: {_.date_time} | Size: {_.file_size}")
+
+Можно проверять методом `.isdir()` является ли элемент архива папкой.
+
+from zipfile import ZipFile
+
+with ZipFile("mzip.zip", 'r') as myzip:
+    for item in myzip.infolist():
+        if item.is_dir():
+            print(f"Папка: {item.filename}")
+        else:
+            print(f"Файл: {item.filename}")
+
+Получить только имена элементов архива можно методом `.namelist()`.
+
+from zipfile import ZipFile
+
+with ZipFile("mzip.zip", 'r') as myzip:
+    for item in myzip.namelist():
+        print(item)
+
+Также можно получить информацию по одному файлу из архива через `.getinfo()`. При отсутствии файла питон выбросит исключение KeyError.
+
+from zipfile import ZipFile
+
+with ZipFile("mzip.zip", 'r') as myzip:
+    try:
+        good_file = myzip.getinfo("text118.txt")
+        print(good_file.file_size)
+    except KeyError:
+        print("Такого файла в архиве нет")
+
+Извлечь все файлы архива можно методом `.extractall()`.
+
+extractall(path=None, members=None, pwd=None)
+
+Первым аргументом можно передать путь папки куда распаковать архив. Аргументом members можно передать список файлов для распаковки.
+
+from zipfile import ZipFile
+
+with ZipFile("mzip.zip", 'r') as myzip:
+    myzip.extractall("new-folder", members=["text118.txt", "text147.txt"])
+
+Можно извлечь отдельно один файл, передав его имя в метод `.extract()`.
+
+from zipfile import ZipFile
+
+with ZipFile("mzip.zip", 'r') as myzip:
+    myzip.extract("text147.txt")
+
+Можно считать содержимое файла в архиве в набор байт методом `.read()`.
+
+from zipfile import ZipFile
+
+with ZipFile("mzip.zip", 'r') as myzip:
+    content = myzip.read("text118.txt")
+    print(content)
+
+И можно открывать файл в архиве без распаковки методом `.open()`.
+
+open(name, mode='r', pwd=None, *, force_zip64=False)
+
+from zipfile import ZipFile
+
+with ZipFile("mzip.zip", 'a') as myzip:
+    with myzip.open("text999.txt", 'w') as add_file:
+        encoded_str = bytes("Welcome Hello World Python...", "UTF-8")
+        add_file.write(encoded_str)
