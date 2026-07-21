@@ -192,8 +192,8 @@ else:
 
 ***
 for i in range(start, end, step):       @
-zip()                                   *
-enumerate()                             *
+zip()                                   @
+enumerate()                             @
 functools, itertools	модули          *
 ***
 
