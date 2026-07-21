@@ -463,12 +463,12 @@ False
 
 === Циклы ===
 
-***
+@@@
 for i in range(start, end, step):       @
 zip()                                   @
 enumerate()                             @
 functools, itertools	модули          @
-***
+@@@
 
 Цикл while
 
