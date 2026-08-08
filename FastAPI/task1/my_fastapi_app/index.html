@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastAPI + Frontend</title>
+</head>
+
+<body>
+
+  <h2>Список моих задач</h2>
+  <input type="text" id="taskTitle" placeholder="Введи задачу">
+  <button onclick="addTask()">Добавить задачу</button>
+  <ul id="taskList"></ul>
+
+  <script>
+    const API_URL = "http://127.0.0.1:8000";
+
+    // Функция для получения задач от бэкенда
+    async function fetchTasks() {
+      const response = await fetch(`${API_URL}/tasks`);
+      const tasks = await response.json();
+
+      const list = document.getElementById("taskList");
+      list.innerHTML = "";
+      tasks.forEach(task => {
+        const li = document.createElement("li");
+        li.textContent = task.title;
+        list.appendChild(li);
+      });
+    }
+
+    // Функция для отправки новой задачи на бэкенд
+    async function addTask() {
+      const input = document.getElementById("taskTitle");
+      if (!input.value) return;
+
+      await fetch(`${API_URL}/tasks`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: input.value, completed: false })
+      });
+
+      input.value = "";
+      fetchTasks(); // Обновляем список
+    }
+
+    // Загружаем список при старте страницы
+    fetchTasks();
+  </script>
+
+</body>
+
+</html>
