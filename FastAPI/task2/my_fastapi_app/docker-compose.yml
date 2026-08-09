@@ -1,0 +1,12 @@
+services:
+  db:                                 # имя сервиса, алиас
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: goodpswrd
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"                     # порт_на_компьютере:порт_в_контейнере
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEAFAULT_PASSWORD: root
