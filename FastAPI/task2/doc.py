@@ -223,8 +223,56 @@ pgadmin:
 # запускаем docker-compose, чтобы Докер скачал образы и поднял оба контейнера
 # up: поднять
 # флаг -d: detached, запуск в фоновом режиме, чтобы работа контейнеров не мешала логами
-""" docker-compose up """
+""" docker-compose up 
+$ docker-compose up
+[+] up 3/3
+ ✔ Network my_fastapi_app_default     Created                                                   0.1s
+ ✔ Container my_fastapi_app-pgadmin-1 Created                                                   0.4s
+ ✔ Container my_fastapi_app-db-1      Created                                                   0.5s
+Attaching to db-1, pgadmin-1
+pgadmin-1  | email config is {'CHECK_EMAIL_DELIVERABILITY': False, 'ALLOW_SPECIAL_EMAIL_DOMAINS': []
+, 'GLOBALLY_DELIVERABLE': True}
+"""
 
-# в настройках в поле «Host name/address» (адрес хоста) пишу алиас
-# pgAdmin отправит запрос по алиасу, а Докер перенаправит на нужный ip
-""" db """
+# на этом моменте у меня FastAPI на ноутбуке (хосте), а БД - в изолированном конейнере. Чтобы код достучался до БД, надо пробросить порт базы наружу. Добавляю блок ports в сервис db
+"""
+ports:
+  - "5432:5432"
+"""
+
+# перезапускаю контейнеры через CTRL+C и CTRL+D в терминале
+""" терминал закрылся """
+
+# заново поднимаю докер с флагом -d чтобы не забивать терминал логами
+# docker-compose up -d
+"""
+$ docker-compose up -d
+[+] up 2/2
+ ✔ Container my_fastapi_app-db-1      Started                                                   1.4s
+ ✔ Container my_fastapi_app-pgadmin-1 Started                                                   0.8s
+"""
+
+# подключаю pgAdmin к БД по алиасу
+# захожу на http://localhost:5050
+# в настройках в поле «Email Address» пишу данные из environment 
+""" попадаю в админку pgAdmin """
+
+# нажимаю Add new server
+# пишу имя FastAPI_DB
+# на вкладке Connection->Host name пишу алиас db
+# username - postgres
+# password из POSTGRES_PASSWORD, жму Save
+"""
+вижу появился сервер и Dashboard
+это визуальный интерфейс для управления базой
+"""
+
+# устанавливаю библиотеки для работы с БД
+# FastAPI сам не умеет обращаться к базе, ему нужен ORM и драйвер
+# pip install sqlalchemy psycopg2-binary
+""" Successfully installed
+greenlet-3.5.5
+psycopg2-binary-2.9.12
+sqlalchemy-2.0.51
+typing-extensions-4.1
+"""
