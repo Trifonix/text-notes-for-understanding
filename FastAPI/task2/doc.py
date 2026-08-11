@@ -276,3 +276,139 @@ psycopg2-binary-2.9.12
 sqlalchemy-2.0.51
 typing-extensions-4.1
 """
+
+# теперь нужно заменить временный список tasks_bd на реальные запросы к БД
+# в FastAPI есть механизм зависимостей Depends
+""" from fastapi import FastAPI, Depends """
+
+# беру SQLAlchemy - библиотеку для работы с БД через python-код
+"""
+from sqlalchemy import create_engine, Column, Integer, String, Boolean
+from sqlalchemy.orm import sessionmaker, declarative_base, Session
+"""
+
+# составляю URL для подключения
+# dialect://username:password@host:port/database
+"""
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:goodpswrd@127.0.0.1:5432/postgres"
+"""
+
+# создаю движок для подключения
+""" engine = create_engine(SQLALCHEMY_DATABASE_URL) """
+
+# создание фабрики сессий
+""" SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine) """
+
+# инициализирую базовый класс для создания таблиц
+""" Base = declarative_base() """
+
+# нужно объяснить базе как выглядит таблица для задач
+# создаю класс `TaskDB`, описываю колонки: id, title, completed
+# при запуске программы FastAPI автоматически создаст эту таблицу в PostgreSQL
+# описываю таблицу
+"""
+class TaskDB(Base):
+  __tablename__ = "tasks"
+
+  id = Column(Integer, primary_key=True, index=True)
+  title = Column(String, index=True)
+  completed = Column(Boolean, default=False)
+"""
+
+# пишу команду на создание таблицы в БД при запуске 
+""" Base.metadata.create_all(bind=engine) """
+
+# начинаю переписывать структуру входящих данных
+# удаляю временный список tasks_bd
+# нужно будет обновить Pydantic - составить схему данных
+# разделю класс `Tasks` на два класса: TaskCreate и TaskResponse
+# класс Tasks становится классом TaskCreate
+# схема для получения данных от пользователя (POST-запрос)
+"""
+class TaskCreate(BaseModel):    
+  title: str                    
+  completed: bool = False
+"""
+
+# схема для отправки данных пользователю (GET-запрос, ID из БД)
+"""
+class TaskResponse(BaseModel):
+  id: int
+  title: str
+  completed: bool
+
+  model_config = {"from_attributes": True}
+"""
+
+# функция `get_db()` будет выдавать сессию БД на время запроса и закрывать
+"""
+def get_db():
+  db = SessionLocal()
+  try:
+    yield db              
+  finally:
+    db.close()
+"""
+
+# создаю роутеры - CRUD операции с БД
+# в декоратор вторым аргументом передаю список объектов TaskResponse
+""" @app.get("/tasks", response_model=list[TaskResponse]) """
+
+# внедряю зависимость от БД в get_tasks()
+""" def get_tasks(db: Session = Depends(get_db)): """
+
+# прописываю эквивалент команды `SELECT * FROM tasks;`
+""" tasks = db.query(TaskDB).all() """
+
+# функция возвращает tasks
+""" return tasks """
+
+# в добавление новой задачи также добавляю модель ответа
+""" @app.post("/tasks", response_model=TaskResponse) """
+
+# функция добавления задачи принимает вторым аргументом записимость от БД
+""" def add_task(task: TaskCreate, db: Session = Depends(get_db)): """
+
+# создаю объект для БД
+""" db_task = TaskDB(title=task.title, completed=task.completed) """
+
+# меняю `tasks_bd.append()` на `db.add()` - задача добавляется в сессию
+""" db.add(db_task) """
+
+# после добавления задачи изменение коммитится в базу
+""" db.commit() """
+
+# чтобы получить сгенерированный ID у задачи, её объект нужно обновить
+""" db.refresh(db_task) """
+
+# возврат созданной задачи
+""" return db_task """
+
+# проверяю работу программы
+# запускаю Docker Desktop
+# поднимаю контейнеры командой `docker-compose up -d`
+""" [+] up 2/2 """
+
+# проверяю статус запущенных контейнеров командой `docker-compose ps`
+"""
+my_fastapi_app-db-1        postgres         "docker-entrypoint.s…"   db        17 hours ago   Up 5 seconds   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp
+my_fastapi_app-pgadmin-1   dpage/pgadmin4   "/entrypoint.sh"         pgadmin   18 hours ago   Up 5 seconds   0.0.0.0:5050->80/tcp, [::]:5050->80/tcp
+"""
+
+# устанавливаю Uvicorn `pip install 'uvicorn[standard]'`
+""" Successfully installed click-8.4.2 colorama-0.4.6 h11-0.16.0 httptools-0.8.0 python-dotenv-1.2.2 pyyaml-6.0.3 uvicorn-0.52.1 watchfiles-1.2.0 websockets-17.0.1 """
+
+# запускаю сервер Uvicorn командой `uvicorn main:app --reload`
+""" INFO:     Application startup complete. """
+
+# захожу на http://127.0.0.1:8000/docs
+""" открылся Swagger """
+
+# через POST /tasks пробую добавить две задачи
+""" 200	Successful Response """
+
+# захожу в pgAdmin: http://localhost:5050
+# открываю сервер FastAPI_DB
+# выбираю Databases->postgres->Schemas->public->Tables->tasks
+# нажимаю ПКМ по tasks --- > View/Edit Data -> All Rows
+""" открылась таблица с id, title, completed и видно две мои задачи """

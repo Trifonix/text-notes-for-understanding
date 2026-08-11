@@ -1,6 +1,26 @@
-from fastapi import FastAPI     # импорт модуля FastAPI
-from pydantic import BaseModel  # импорт модуля BaseModel
+from fastapi import FastAPI, Depends                # импорт модулей
+from pydantic import BaseModel                      # импорт модуля BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+
+from sqlalchemy import create_engine, Column, Integer, String, Boolean
+from sqlalchemy.orm import sessionmaker, declarative_base, Session
+
+''' Настройка базы данных '''
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:goodpswrd@127.0.0.1:5432/postgres"
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+''' Описание таблицы в БД, модель SQLAlchemy '''
+class TaskDB(Base):
+  __tablename__ = "tasks"
+
+  id = Column(Integer, primary_key=True, index=True)
+  title = Column(String, index=True)
+  completed = Column(Boolean, default=False)
+
+''' Создание таблицы в БД при запуске '''
+Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI()                 # создание экземпляра приложения
@@ -17,11 +37,25 @@ app.add_middleware(
 
 
 ''' Структура входящих данных '''
-tasks_bd = []                   # создание БД в памяти
-
-class Tasks(BaseModel):         # декларация дочернего класса Задачи от БазовойМодели
+class TaskCreate(BaseModel):    # декларация дочернего класса Задачи от БазовойМодели
   title: str                    # поле Заголовок - тип Строка
   completed: bool = False       # поле Завершённость - тип Логический
+
+''' Структура исходящих данных '''
+class TaskResponse(BaseModel):
+  id: int
+  title: str
+  completed: bool
+
+  model_config = {"from_attributes": True}  # настройка для Pydantic->SQLAlchemy
+
+''' Получение сессии БД '''
+def get_db():
+  db = SessionLocal()
+  try:
+    yield db              # передача сессии роутеру
+  finally:
+    db.close()            # закрытие после выполнения
 
 
 @app.get("/")                   # декоратор: при GET-запросе на корень вызовет read_root()
@@ -31,13 +65,17 @@ def read_root():
 
 
 ''' Получение списка всех задач '''
-@app.get("/tasks")              # декоратор: при GET-запросе на '/tasks/ вызовет get_tasks()
-def get_tasks():
-  return tasks_bd               # возврат списка задач
+@app.get("/tasks", response_model=list[TaskResponse])
+def get_tasks(db: Session = Depends(get_db)):
+  tasks = db.query(TaskDB).all()                # Аналог SELECT * FROM tasks;
+  return tasks                                  # возврат списка задач
 
 
 ''' Добавление новой задачи '''
-@app.post("/tasks")             # декоратор: при POST-запросе на '/tasks/' вызовет add_task(task)
-def add_task(task: Tasks):      # функция принимает задачу в виде объекта класса Tasks
-  tasks_bd.append(task)         # добавляет задачу в список
-  return {"message": "Задача добавлена!", "task": task} # возврат словаря из сообщения и задачи
+@app.post("/tasks", response_model=TaskResponse)
+def add_task(task: TaskCreate, db: Session = Depends(get_db)):
+  db_task = TaskDB(title=task.title, completed=task.completed)
+  db.add(db_task)
+  db.commit()
+  db.refresh(db_task)
+  return db_task
